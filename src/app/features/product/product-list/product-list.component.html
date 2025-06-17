@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Products</h2>
+  
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" *ngFor="let product of products">
+      <div class="card h-100">
+        <img [src]="product.images[0] || 'https://via.placeholder.com/300'" 
+             class="card-img-top" 
+             [alt]="product.title"
+             style="height: 200px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p class="card-text text-truncate">{{ product.description }}</p>
+          <p class="text-primary fw-bold">${{ product.price }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 0">
+        <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+      </li>
+      
+      <li class="page-item" *ngFor="let page of [].constructor(totalItems/itemsPerPage); let i = index"
+          [class.active]="i === currentPage">
+        <button class="page-link" (click)="changePage(i)">{{ i + 1 }}</button>
+      </li>
+      
+      <li class="page-item" [class.disabled]="currentPage >= (totalItems/itemsPerPage) - 1">
+        <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>
