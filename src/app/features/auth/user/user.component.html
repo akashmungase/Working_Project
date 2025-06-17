@@ -1,1 +1,77 @@
-<p>user works!</p>
+<!-- user/user.component.html -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="text-center mb-4">Create New User</h2>
+
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="mt-4">
+            <!-- Success Message -->
+            <div *ngIf="successMessage" class="alert alert-success">
+              {{ successMessage }}
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
+            </div>
+
+            <!-- Name -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="name" formControlName="name">
+              <div *ngIf="submitted && userForm.get('name')?.errors" class="text-danger">
+                <div *ngIf="userForm.get('name')?.errors?.['required']">Name is required</div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+              <div *ngIf="submitted && userForm.get('email')?.errors" class="text-danger">
+                <div *ngIf="userForm.get('email')?.errors?.['required']">Email is required</div>
+                <div *ngIf="userForm.get('email')?.errors?.['email']">Please enter a valid email</div>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" formControlName="password">
+              <div *ngIf="submitted && userForm.get('password')?.errors" class="text-danger">
+                <div *ngIf="userForm.get('password')?.errors?.['required']">Password is required</div>
+                <div *ngIf="userForm.get('password')?.errors?.['minlength']">
+                  Password must be at least 4 characters
+                </div>
+              </div>
+            </div>
+
+            <!-- Avatar -->
+            <div class="mb-3">
+              <label for="avatar" class="form-label">Avatar URL</label>
+              <input type="text" class="form-control" id="avatar" formControlName="avatar">
+              <div *ngIf="submitted && userForm.get('avatar')?.errors" class="text-danger">
+                <div *ngIf="userForm.get('avatar')?.errors?.['required']">Avatar is required</div>
+              </div>
+
+              <!-- Avatar Preview -->
+              <div class="mt-2" *ngIf="userForm.get('avatar')?.value">
+                <label class="form-label">Preview:</label>
+                <img [src]="userForm.get('avatar')?.value" class="img-thumbnail"
+                  style="max-width: 200px; max-height: 200px;">
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Create User</button>
+          </form>
+          <div class="mt-3 text-center">
+            <p>Already have an account? <a routerLink="">login</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

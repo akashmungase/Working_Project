@@ -35,7 +35,6 @@ export class ProductListComponent implements OnInit {
     this.loadProducts();
     this.loadCategories();
     
-    // Watch form changes with debounce
     this.filterForm.valueChanges
       .pipe(debounceTime(400))
       .subscribe(() => {
