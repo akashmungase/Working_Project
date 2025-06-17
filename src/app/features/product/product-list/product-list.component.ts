@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/core/models/product.model';
 import { ProductService } from 'src/app/core/services/product.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-list',
@@ -9,28 +11,88 @@ import { ProductService } from 'src/app/core/services/product.service';
 })
 export class ProductListComponent implements OnInit {
   products: any[] = [];
+  categories: any[] = [];
   currentPage = 0;
   itemsPerPage = 10;
-  totalItems = 0;
+  totalItems = 60;
+  sortDirection: 'asc' | 'desc' | '' = '';
+  
+  filterForm: FormGroup;
 
-  constructor(private productService: ProductService) {
+  constructor(
+    private productService: ProductService,
+    private fb: FormBuilder
+  ) {
+    this.filterForm = this.fb.group({
+      title: [''],
+      categoryId: [''],
+      priceMin: [''],
+      priceMax: ['']
+    });
   }
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadCategories();
+    
+    // Watch form changes with debounce
+    this.filterForm.valueChanges
+      .pipe(debounceTime(400))
+      .subscribe(() => {
+        this.currentPage = 0;
+        this.loadProducts();
+      });
   }
 
   loadProducts() {
     const offset = this.currentPage * this.itemsPerPage;
-    this.productService.getProducts(offset, this.itemsPerPage)
-      .subscribe((data: any) => {
-        this.products = data;
-        this.totalItems = 60;
-      });
+    const formValue = this.filterForm.value;
+    
+    this.productService.getProducts(
+      offset,
+      this.itemsPerPage,
+      formValue.title,
+      formValue.categoryId,
+      formValue.priceMin,
+      formValue.priceMax
+    ).subscribe((data: any) => {
+      this.products = data;
+      this.sortProducts();
+    });
+  }
+
+  loadCategories() {
+    this.productService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
+  }
+
+  sortByPrice() {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.sortProducts();
+  }
+
+  private sortProducts() {
+    if (this.sortDirection === 'asc') {
+      this.products.sort((a, b) => a.price - b.price);
+    } else if (this.sortDirection === 'desc') {
+      this.products.sort((a, b) => b.price - a.price);
+    }
   }
 
   changePage(page: number) {
     this.currentPage = page;
     this.loadProducts();
+  }
+
+  resetFilters() {
+    this.filterForm.reset();
+    this.sortDirection = '';
+    this.currentPage = 0;
+    this.loadProducts();
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 }

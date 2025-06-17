@@ -1,6 +1,49 @@
 <div class="container mt-4">
   <h2 class="mb-4">Products</h2>
   
+  <!-- Filter Form -->
+  <form [formGroup]="filterForm" class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- Title Filter -->
+        <div class="col-md-3">
+          <label class="form-label">Search</label>
+          <input type="text" class="form-control" formControlName="title" placeholder="Product title">
+        </div>
+        
+        <!-- Category Filter -->
+        <div class="col-md-4">
+          <label class="form-label">Category</label>
+          <select class="form-select" formControlName="categoryId">
+            <option value="">All Categories</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+        
+        <!-- Price Range -->
+        <div class="col-md-3">
+          <label class="form-label">Price Range</label>
+          <div class="input-group">
+            <input type="number" class="form-control" formControlName="priceMin" placeholder="Min">
+            <span class="input-group-text">-</span>
+            <input type="number" class="form-control" formControlName="priceMax" placeholder="Max">
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="col-md-2 d-grid gap-2">
+          <button type="button" class="btn btn-primary" (click)="sortByPrice()">
+            Sort {{ sortDirection === 'asc' ? '↑' : sortDirection === 'desc' ? '↓' : '' }}
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+            Reset Filters
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <!-- Product Grid -->
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col" *ngFor="let product of products">
       <div class="card h-100">
@@ -11,24 +54,28 @@
         <div class="card-body">
           <h5 class="card-title">{{ product.title }}</h5>
           <p class="card-text text-truncate">{{ product.description }}</p>
-          <p class="text-primary fw-bold">${{ product.price }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-secondary">{{ product.category.name }}</span>
+            <span class="h5 mb-0">${{ product.price }}</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Pagination -->
   <nav aria-label="Page navigation" class="mt-4">
-    <ul class="pagination justify-content-center">
+    <ul class="pagination justify-content-end">
       <li class="page-item" [class.disabled]="currentPage === 0">
         <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
       </li>
       
-      <li class="page-item" *ngFor="let page of [].constructor(totalItems/itemsPerPage); let i = index"
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
           [class.active]="i === currentPage">
         <button class="page-link" (click)="changePage(i)">{{ i + 1 }}</button>
       </li>
       
-      <li class="page-item" [class.disabled]="currentPage >= (totalItems/itemsPerPage) - 1">
+      <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
         <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
       </li>
     </ul>
