@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS  } from "@angular/common/http";
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -6,7 +6,7 @@
         <div class="card-body">
           <h2 class="text-center mb-4">Create New User</h2>
 
-          <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="mt-4">
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="mt-4" autocomplete="off">
             <!-- Success Message -->
             <div *ngIf="successMessage" class="alert alert-success">
               {{ successMessage }}
@@ -68,7 +68,7 @@
             <button type="submit" class="btn btn-primary w-100">Create User</button>
           </form>
           <div class="mt-3 text-center">
-            <p>Already have an account? <a routerLink="">login</a></p>
+            <p>Already have an account? <a routerLink="/auth/login">login</a></p>
           </div>
         </div>
       </div>

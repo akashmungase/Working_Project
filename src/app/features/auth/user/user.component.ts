@@ -46,8 +46,8 @@ export class UserComponent implements OnInit {
     };
     
     this.authService.createUser(userData).subscribe({
-      next: (createdUser: User) => {
-        this.successMessage = `User ${createdUser.name} created successfully!`;
+      next: () => {
+        this.successMessage = `User created successfully!`;
         this.userForm.reset();
         this.submitted = false;
       },
