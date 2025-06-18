@@ -3,6 +3,7 @@ import { Product } from 'src/app/core/models/product.model';
 import { ProductService } from 'src/app/core/services/product.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -16,25 +17,26 @@ export class ProductListComponent implements OnInit {
   itemsPerPage = 10;
   totalItems = 60;
   sortDirection: 'asc' | 'desc' | '' = '';
-  
+
   filterForm: FormGroup;
 
   constructor(
     private productService: ProductService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.filterForm = this.fb.group({
-      title: [''],
-      categoryId: [''],
-      priceMin: [''],
-      priceMax: ['']
+      title: [null],
+      categoryId: [null],
+      priceMin: [null],
+      priceMax: [null]
     });
   }
 
   ngOnInit(): void {
     this.loadProducts();
     this.loadCategories();
-    
+
     this.filterForm.valueChanges
       .pipe(debounceTime(400))
       .subscribe(() => {
@@ -46,7 +48,7 @@ export class ProductListComponent implements OnInit {
   loadProducts() {
     const offset = this.currentPage * this.itemsPerPage;
     const formValue = this.filterForm.value;
-    
+
     this.productService.getProducts(
       offset,
       this.itemsPerPage,
@@ -93,5 +95,9 @@ export class ProductListComponent implements OnInit {
 
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  openProductDetails(Id: number) {
+    this.router.navigate([`detail/${Id}`])
   }
 }

@@ -1,44 +1,41 @@
 <!-- header/header.component.html -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg bg-light-yellow fixed-top">
   <div class="container">
     <!-- Logo/Brand Name -->
     <a class="navbar-brand" href="#">
       <span class="fw-bold">E-Shopping</span>
     </a>
-    
+
     <!-- Mobile Toggle Button -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <!-- Menu Items -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" routerLink="">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" routerLink="/cart">Cart</a>
         </li>
       </ul>
-      
-       <!-- Cart Icon -->
+
+      <!-- Cart Icon -->
       <ul class="navbar-nav me-3">
         <li class="nav-item">
           <a class="nav-link position-relative" routerLink="/cart">
             <i class="bi bi-cart fs-5"></i>
-            <span *ngIf="cartItemCount > 0" 
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <span *ngIf="cartItemCount > 0"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               {{ cartItemCount }}
               <span class="visually-hidden">items in cart</span>
             </span>
           </a>
         </li>
       </ul>
-      
+
       <!-- Login/Logout & Profile -->
       <ul class="navbar-nav">
         <li class="nav-item" *ngIf="!isLoggedIn">
@@ -46,10 +43,8 @@
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
           <div class="d-flex align-items-center">
-            <img src="https://via.placeholder.com/30" 
-                 class="rounded-circle me-2" 
-                 alt="Profile"
-                 style="width: 30px; height: 30px;">
+            <img src="https://via.placeholder.com/30" class="rounded-circle me-2" alt="Profile"
+              style="width: 30px; height: 30px;">
             <a class="nav-link" href="#">Profile</a>
           </div>
         </li>
@@ -61,5 +56,6 @@
   </div>
 </nav>
 <main class="container mt-5 pt-3">
+  <ng-http-loader></ng-http-loader>
   <router-outlet></router-outlet>
 </main>

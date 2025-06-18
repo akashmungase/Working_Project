@@ -12,7 +12,6 @@ import { CartService } from 'src/app/core/services/cart.service';
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
-  loading = true;
   selectedImageIndex = 0;
   quantity = 1;
   showSuccessAlert = false;
@@ -23,30 +22,25 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService
   ) {}
 
-  ngOnInit(): void {
-    // const productId = this.route.snapshot.paramMap.get('id');
-    const productId = 4;
+  ngOnInit() {
+    const productId = this.route.snapshot.paramMap.get('id');
     
     if (productId) {
-      this.productService.getProductById(+productId).subscribe({
+      this.productService.getProductById(Number(productId)).subscribe({
         next: (product) => {
           this.product = product;
-          this.loading = false;
         },
         error: () => {
-          this.loading = false;
         }
       });
-    } else {
-      this.loading = false;
     }
   }
 
-  selectImage(index: number): void {
+  selectImage(index: number) {
     this.selectedImageIndex = index;
   }
 
-  addToCart(): void {
+  addToCart() {
     if (this.product) {
       this.cartService.addToCart(this.product, this.quantity);
       this.showSuccessAlert = true;
@@ -54,11 +48,11 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  increaseQuantity(): void {
+  increaseQuantity() {
     this.quantity++;
   }
 
-  decreaseQuantity(): void {
+  decreaseQuantity() {
     if (this.quantity > 1) {
       this.quantity--;
     }

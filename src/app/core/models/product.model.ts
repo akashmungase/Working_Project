@@ -14,3 +14,8 @@ export interface Category {
     image: string;
     slug: string;
 }
+
+export interface CartItem {
+    product: Product;
+    quantity: number;
+}

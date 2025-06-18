@@ -1,12 +1,6 @@
-// cart.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Product } from '../models/product.model';
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
+import { Product, CartItem } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,30 +16,16 @@ export class CartService {
     this.loadCartFromStorage();
   }
 
-  // private loadCartFromStorage(): void {
-  //   const cartData = localStorage.getItem('cart');
-  //   if (cartData) {
-  //     try {
-  //       const items = JSON.parse(cartData);
-  //       this.cartItems.next(items);
-  //       this.updateItemCount(items);
-  //     } catch (e) {
-  //       console.error('Error parsing cart data', e);
-  //       this.clearCart();
-  //     }
-  //   }
-  // }
-
-  private saveCartToStorage(): void {
+  private saveCartToStorage() {
     localStorage.setItem('cart', JSON.stringify(this.cartItems.value));
   }
 
-  private updateItemCount(items: CartItem[]): void {
+  private updateItemCount(items: CartItem[]) {
     const count = items.reduce((total, item) => total + item.quantity, 0);
     this.itemCount.next(count);
   }
 
-  addToCart(product: Product, quantity: number = 1): void {
+  addToCart(product: Product, quantity: number = 1) {
     const currentItems = [...this.cartItems.value];
     const existingItemIndex = currentItems.findIndex(
       item => item.product.id === product.id
@@ -60,13 +40,13 @@ export class CartService {
     this.updateCartState(currentItems);
   }
 
-  removeFromCart(index: number): void {
+  removeFromCart(index: number) {
     const currentItems = [...this.cartItems.value];
     currentItems.splice(index, 1);
     this.updateCartState(currentItems);
   }
 
-  updateQuantity(index: number, newQuantity: number): void {
+  updateQuantity(index: number, newQuantity: number) {
     const currentItems = [...this.cartItems.value];
     
     if (newQuantity > 0) {
@@ -77,7 +57,7 @@ export class CartService {
     }
   }
 
-  clearCart(): void {
+  clearCart() {
     this.cartItems.next([]);
     this.itemCount.next(0);
     localStorage.removeItem('cart');
@@ -90,18 +70,17 @@ export class CartService {
     );
   }
 
-  private updateCartState(items: CartItem[]): void {
+  private updateCartState(items: CartItem[]) {
     this.cartItems.next(items);
     this.updateItemCount(items);
     this.saveCartToStorage();
   }
 
-    private loadCartFromStorage(): void {
+    private loadCartFromStorage() {
     const cartData = localStorage.getItem('cart');
     if (cartData) {
       try {
         const items: CartItem[] = JSON.parse(cartData);
-        // Ensure all items have proper Product objects
         const validatedItems = items.map(item => ({
           ...item,
           product: this.validateProduct(item.product)
@@ -115,7 +94,6 @@ export class CartService {
     }
   }
 
-  // Ensure product has required fields
   private validateProduct(product: any): Product {
     return {
       id: product.id,

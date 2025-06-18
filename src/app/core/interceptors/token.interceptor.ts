@@ -17,12 +17,7 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private injector: Injector) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Skip adding token to login and refresh-token requests
-    if (req.url.includes('auth/login') || req.url.includes('auth/refresh-token')) {
-      return next.handle(req);
-    }
 
-    // Get AuthService using Injector to avoid circular dependency
     const authService = this.injector.get(AuthService);
     const router = this.injector.get(Router);
     

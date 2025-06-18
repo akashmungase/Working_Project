@@ -3,3 +3,7 @@
 .alert-danger {
     padding: 6px !important;
 }
+
+.pointer {
+    cursor: pointer;
+}

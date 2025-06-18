@@ -1,21 +1,8 @@
-<!-- product-detail.component.html -->
-<div *ngIf="loading" class="text-center py-5">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <p class="mt-2 text-muted">Loading product details...</p>
-</div>
-
-<div *ngIf="!loading && !product" class="alert alert-danger text-center mt-5">
-  Product not found
-</div>
-
-<div *ngIf="!loading && product" class="container py-4">
-  <!-- Success Alert -->
-  <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show">
+<div *ngIf="product" class="container py-4">
+  <!-- <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show">
     <strong>{{ quantity }} {{ product.title }}</strong> added to cart!
     <button type="button" class="btn-close" (click)="showSuccessAlert = false"></button>
-  </div>
+  </div> -->
 
   <div class="row g-4">
     <!-- Product Images -->
@@ -29,7 +16,7 @@
       <div class="thumbnail-container d-flex flex-wrap gap-2">
         <div *ngFor="let image of product.images; let i = index">
           <img [src]="image" 
-               class="img-thumbnail cursor-pointer" 
+               class="img-thumbnail pointer" 
                [class.border-primary]="i === selectedImageIndex"
                style="width: 80px; height: 80px;" 
                (click)="selectImage(i)">

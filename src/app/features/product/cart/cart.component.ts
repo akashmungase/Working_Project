@@ -10,33 +10,37 @@ import { Router } from '@angular/router';
 export class CartComponent implements OnInit {
   cartItems: any[] = [];
   totalPrice = 0;
+  loading = true;
 
   constructor(
     private cartService: CartService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
-    // Load cart items from service (which loads from localStorage)
+  ngOnInit() {
+    this.loading = true;
     this.cartService.cartItems$.subscribe(items => {
       this.cartItems = items;
       this.calculateTotal();
+      setTimeout(() => {
+        this.loading = false;
+      }, 200);
     });
   }
 
-  calculateTotal(): void {
+  calculateTotal() {
     this.totalPrice = this.cartItems.reduce(
-      (total, item) => total + (item.product.price * item.quantity), 
+      (total, item) => total + (item.product.price * item.quantity),
       0
     );
   }
 
-  increaseQuantity(index: number): void {
+  increaseQuantity(index: number) {
     const newQuantity = this.cartItems[index].quantity + 1;
     this.cartService.updateQuantity(index, newQuantity);
   }
 
-  decreaseQuantity(index: number): void {
+  decreaseQuantity(index: number) {
     const currentQuantity = this.cartItems[index].quantity;
     if (currentQuantity > 1) {
       this.cartService.updateQuantity(index, currentQuantity - 1);
@@ -45,15 +49,15 @@ export class CartComponent implements OnInit {
     }
   }
 
-  removeItem(index: number): void {
+  removeItem(index: number) {
     this.cartService.removeFromCart(index);
   }
 
-  continueShopping(): void {
-    this.router.navigate(['/products']);
+  continueShopping() {
+    this.router.navigate(['']);
   }
 
-  proceedToCheckout(): void {
+  proceedToCheckout() {
     this.router.navigate(['/checkout']);
   }
 }

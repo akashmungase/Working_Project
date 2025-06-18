@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <h2 class="mb-4">Products</h2>
-  
+
   <form [formGroup]="filterForm" class="card mb-4">
     <div class="card-body">
       <div class="row g-3">
@@ -10,14 +10,15 @@
           <label class="form-label">Search</label>
           <input type="text" class="form-control" formControlName="title" placeholder="Product title">
         </div>
-        
+
         <!-- Category Filter -->
         <div class="col-md-4">
           <label class="form-label">Category</label>
-          <ng-select [items]="categories" bindLabel="name" bindValue="id" placeholder="Select Categories">
+          <ng-select [items]="categories" bindLabel="name" bindValue="id" placeholder="Select Categories"
+            formControlName="categoryId">
           </ng-select>
         </div>
-        
+
         <!-- Price Range -->
         <div class="col-md-3">
           <label class="form-label">Price Range</label>
@@ -27,7 +28,7 @@
             <input type="number" class="form-control" formControlName="priceMax" placeholder="Max">
           </div>
         </div>
-        
+
         <!-- Action Buttons -->
         <div class="col-md-2 d-grid gap-2">
           <button type="button" class="btn btn-primary" (click)="sortByPrice()">
@@ -40,15 +41,13 @@
       </div>
     </div>
   </form>
-  
+
   <!-- Product Grid -->
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col" *ngFor="let product of products">
-      <div class="card h-100">
-        <img [src]="product.images[0]" 
-             class="card-img-top" 
-             [alt]="product.title"
-             style="height: 200px; object-fit: cover;">
+      <div class="card h-100 pointer" (click)="openProductDetails(product.id)">
+        <img [src]="product.images[0]" class="card-img-top" [alt]="product.title"
+          style="height: 200px; object-fit: cover;">
         <div class="card-body">
           <h5 class="card-title">{{ product.title }}</h5>
           <p class="card-text text-truncate">{{ product.description }}</p>
@@ -67,12 +66,12 @@
       <li class="page-item" [class.disabled]="currentPage === 0">
         <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
       </li>
-      
+
       <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
-          [class.active]="i === currentPage">
+        [class.active]="i === currentPage">
         <button class="page-link" (click)="changePage(i)">{{ i + 1 }}</button>
       </li>
-      
+
       <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
         <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
       </li>
