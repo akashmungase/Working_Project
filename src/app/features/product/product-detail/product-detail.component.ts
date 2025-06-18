@@ -1,3 +1,4 @@
+// product-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/core/services/product.service';
@@ -14,6 +15,7 @@ export class ProductDetailComponent implements OnInit {
   loading = true;
   selectedImageIndex = 0;
   quantity = 1;
+  showSuccessAlert = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,7 +25,7 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     // const productId = this.route.snapshot.paramMap.get('id');
-    const productId = 121;
+    const productId = 4;
     
     if (productId) {
       this.productService.getProductById(+productId).subscribe({
@@ -40,15 +42,25 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  selectImage(index: number) {
+  selectImage(index: number): void {
     this.selectedImageIndex = index;
   }
 
-  addToCart() {
+  addToCart(): void {
     if (this.product) {
       this.cartService.addToCart(this.product, this.quantity);
-      // Reset quantity after adding
-      this.quantity = 1;
+      this.showSuccessAlert = true;
+      setTimeout(() => this.showSuccessAlert = false, 3000);
+    }
+  }
+
+  increaseQuantity(): void {
+    this.quantity++;
+  }
+
+  decreaseQuantity(): void {
+    if (this.quantity > 1) {
+      this.quantity--;
     }
   }
 }
