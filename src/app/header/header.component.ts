@@ -3,6 +3,7 @@ import { CartService } from '../core/services/cart.service';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private cartService: CartService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -37,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logoutUser() {
+    this.toastr.success('Log Out successfully!', 'Success');
     this.authService.logout();
     this.router.navigate(['']);
     this.cartItemCount = 0

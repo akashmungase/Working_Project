@@ -1,0 +1,93 @@
+<div class="container mt-4">
+    <h4 class="mb-2">Add Products</h4>
+    <div class="">
+        <form [formGroup]="productsForm" (ngSubmit)="onSubmit()" autocomplete="off">
+            <div style="max-width: 100%; overflow-x: auto; height: 300px;">
+                <table class="table table-bordered" style="min-width: 1000px;">
+                    <thead class="table-light position-sticky">
+                        <tr>
+                            <th style="width: 20%;">Title</th>
+                            <th style="width: 15%;">Category</th>
+                            <th style="width: 15%;">Price</th>
+                            <th style="width: 25%;">Description</th>
+                            <th style="width: 20%;">Images URL <small>(comma seperate)</small></th>
+                            <!-- <th style="width: 15%;">Actions</th> -->
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="products">
+                        <tr *ngFor="let product of products.controls; let i = index;  let first= first; let last = last;"
+                            [formGroupName]="i">
+                            <td>
+                                <input type="text" class="form-control" formControlName="title"
+                                    placeholder="Product title" />
+                                <div *ngIf="submitted &&products.at(i).get('title')?.errors?.['required']"
+                                    class="text-danger small">
+                                    Title is required
+                                </div>
+                            </td>
+
+                            <td style="width: 300px;">
+                                <ng-select [items]="categories" bindLabel="name" bindValue="id"
+                                    placeholder="Select Categories" formControlName="categoryId">
+                                </ng-select>
+                                <div *ngIf="submitted && products.at(i).get('categoryId')?.errors?.['required']"
+                                    class="text-danger small">
+                                    Category is required
+                                </div>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" formControlName="price" min="0"
+                                    placeholder="Price" />
+                                <div *ngIf="submitted &&products.at(i).get('price')?.errors?.['required']"
+                                    class="text-danger small">
+                                    Price is required
+                                </div>
+                                <div *ngIf="submitted &&products.at(i).get('price')?.errors?.['min']"
+                                    class="text-danger small">
+                                    Price must be positive
+                                </div>
+                            </td>
+
+                            <td>
+                                <textarea class="form-control" formControlName="description" rows="1"
+                                    placeholder="Description"></textarea>
+                                <div *ngIf=" submitted && products.at(i).get('description')?.errors?.['required']"
+                                    class="text-danger small">
+                                    Description is required
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" formControlName="images"
+                                    placeholder="Images URL" />
+                                <div *ngIf="submitted && products.at(i).get('images')?.errors?.['required']"
+                                    class="text-danger small">
+                                    Image is required
+                                </div>
+                            </td>
+
+                            <!-- <td class="text-center align-middle">
+                                <button *ngIf="!last || !first" type="button" class="btn btn-sm btn-danger  m-2"
+                                    (click)="removeProduct(i)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <button *ngIf="last" type="button" class="btn btn-sm btn-success"
+                                    (click)="addProduct()">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" class="btn btn-secondary me-2" (click)="resetForm()">
+                    Reset
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

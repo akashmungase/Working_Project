@@ -13,12 +13,12 @@ export class ProductService {
 
   getProducts(offset: number, limit: number, title?: string, categoryId?: number, priceMin?: number, priceMax?: number) {
     let url = `${this.apiUrl}?offset=${offset}&limit=${limit}`;
-    
+
     if (title) url += `&title=${title}`;
     if (categoryId) url += `&categoryId=${categoryId}`;
     if (priceMin) url += `&price_min=${priceMin}`;
     if (priceMax) url += `&price_max=${priceMax}`;
-    
+
     return this.http.get<any[]>(url);
   }
 
@@ -28,5 +28,9 @@ export class ProductService {
 
   getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
+  createProduct(product: any): Observable<any> {
+    return this.http.post(this.apiUrl, product);
   }
 }

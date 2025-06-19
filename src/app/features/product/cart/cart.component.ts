@@ -22,7 +22,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.cartService.cartItems$.subscribe(items => {
+    this.subscription = this.cartService.cartItems$.subscribe(items => {
       this.cartItems = items;
       this.calculateTotal();
       setTimeout(() => {

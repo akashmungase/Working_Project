@@ -93,7 +93,7 @@ export class ProductListComponent implements OnInit {
 
   get totalPages(): any {
     if (this.products.length) {
-      return Math.ceil(this.products.length / this.itemsPerPage);
+      return (60 / this.itemsPerPage);
     }
   }
 
