@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from 'src/app/core/services/cart.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   cartItems: any[] = [];
   totalPrice = 0;
   loading = true;
+  userData: any;
+  subscription!: Subscription;
 
   constructor(
     private cartService: CartService,
@@ -55,5 +58,19 @@ export class CartComponent implements OnInit {
 
   continueShopping() {
     this.router.navigate(['']);
+  }
+
+  proccedToCheckout() {
+    this.userData = localStorage.getItem('user_data');
+    let user = JSON.parse(this.userData)
+    if (!user) {
+      this.router.navigate(['/auth/login'])
+    } else {
+      this.router.navigate(['/payment']);
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

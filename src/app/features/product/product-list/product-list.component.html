@@ -5,13 +5,11 @@
     <div class="card-body">
       <div class="row g-3">
 
-        <!-- Title Filter -->
         <div class="col-md-3">
           <label class="form-label">Search</label>
           <input type="text" class="form-control" formControlName="title" placeholder="Product title">
         </div>
 
-        <!-- Category Filter -->
         <div class="col-md-4">
           <label class="form-label">Category</label>
           <ng-select [items]="categories" bindLabel="name" bindValue="id" placeholder="Select Categories"
@@ -19,7 +17,6 @@
           </ng-select>
         </div>
 
-        <!-- Price Range -->
         <div class="col-md-3">
           <label class="form-label">Price Range</label>
           <div class="input-group">
@@ -29,7 +26,6 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="col-md-2 d-grid gap-2">
           <button type="button" class="btn btn-primary" (click)="sortByPrice()">
             Sort {{ sortDirection === 'asc' ? '↑' : sortDirection === 'desc' ? '↓' : '' }}
@@ -42,8 +38,7 @@
     </div>
   </form>
 
-  <!-- Product Grid -->
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div *ngIf="products.length" class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col" *ngFor="let product of products">
       <div class="card h-100 pointer" (click)="openProductDetails(product.id)">
         <img [src]="product.images[0]" class="card-img-top" [alt]="product.title"
@@ -60,7 +55,10 @@
     </div>
   </div>
 
-  <!-- Pagination -->
+  <div *ngIf="products.length == 0" class="alert alert-secondary" role="alert">
+    Product Not Found
+  </div>
+
   <nav aria-label="Page navigation" class="mt-4">
     <ul class="pagination justify-content-end">
       <li class="page-item" [class.disabled]="currentPage === 0">

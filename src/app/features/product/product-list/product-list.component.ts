@@ -14,7 +14,6 @@ export class ProductListComponent implements OnInit {
   categories: any[] = [];
   currentPage = 0;
   itemsPerPage = 10;
-  totalItems = 60;
   sortDirection: 'asc' | 'desc' | '' = '';
 
   filterForm: FormGroup;
@@ -92,8 +91,10 @@ export class ProductListComponent implements OnInit {
     this.loadProducts();
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
+  get totalPages(): any {
+    if (this.products.length) {
+      return Math.ceil(this.products.length / this.itemsPerPage);
+    }
   }
 
   openProductDetails(Id: number) {
