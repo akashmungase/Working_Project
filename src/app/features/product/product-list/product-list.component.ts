@@ -13,7 +13,7 @@ export class ProductListComponent implements OnInit {
   products: any[] = [];
   categories: any[] = [];
   currentPage = 0;
-  itemsPerPage = 10;
+  itemsPerPage = 3;
   sortDirection: 'asc' | 'desc' | '' = '';
 
   filterForm: FormGroup;
