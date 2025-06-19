@@ -1,4 +1,3 @@
-// product-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/core/services/product.service';
@@ -20,11 +19,11 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: CartService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const productId = this.route.snapshot.paramMap.get('id');
-    
+
     if (productId) {
       this.productService.getProductById(Number(productId)).subscribe({
         next: (product) => {

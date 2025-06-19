@@ -1,11 +1,5 @@
-// core/interceptors/token.interceptor.ts
 import { Injectable, Injector } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';

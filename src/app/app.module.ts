@@ -20,7 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     NgHttpLoaderModule.forRoot(),
     SweetAlert2Module.forRoot(),
-  ToastrModule.forRoot({
+    ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       progressBar: true,
       timeOut: 3000,
